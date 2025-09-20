@@ -1,0 +1,40 @@
+name: Build DLL - No-V-synch
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    runs-on: windows-latest
+
+    env:
+      Project_Path: No-V-synch/No-V-synch.csproj   # <-- Replace with your actual .csproj path if different
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'                      # Change if you use a different version
+
+    - name: Restore NuGet packages
+      run: dotnet restore ${{ env.Project_Path }}
+
+    - name: Build project (DLL output)
+      run: dotnet build ${{ env.Project_Path }} --configuration ${{ matrix.configuration }} --output ./build
+
+    - name: Upload DLL artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: No-V-synch-DLL-${{ matrix.configuration }}
+        path: ./build/*.dll
