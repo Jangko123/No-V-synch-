@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <EnableModBuildConfig>false</EnableModBuildConfig>  <!-- disable error from ModBuildConfig -->
+    <EnableModBuildConfig>false</EnableModBuildConfig> <!-- 🚀 disables game folder check -->
   </PropertyGroup>
 
   <ItemGroup>
