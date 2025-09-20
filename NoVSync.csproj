@@ -1,8 +1,13 @@
-<ItemGroup>
-  <Reference Include="Stardew Valley">
-    <HintPath>libs\Stardew Valley.dll</HintPath>
-  </Reference>
-  <Reference Include="StardewModdingAPI">
-    <HintPath>libs\StardewModdingAPI.dll</HintPath>
-  </Reference>
-</ItemGroup>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+  </ItemGroup>
+
+</Project>
