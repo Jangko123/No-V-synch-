@@ -1,4 +1,4 @@
-name: Build DLL - No-V-synch
+name: .NET Build
 
 on:
   push:
@@ -8,33 +8,36 @@ on:
 
 jobs:
   build:
+    runs-on: windows-latest
 
     strategy:
       matrix:
-        configuration: [Debug, Release]
-
-    runs-on: windows-latest
+        configuration: [ Debug, Release ]
 
     env:
-      Project_Path: No-V-synch/No-V-synch.csproj   # <-- Replace with your actual .csproj path if different
+      Project_Path: NoVSync.csproj
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'                      # Change if you use a different version
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
 
-    - name: Restore NuGet packages
-      run: dotnet restore ${{ env.Project_Path }}
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.Project_Path }}
 
-    - name: Build project (DLL output)
-      run: dotnet build ${{ env.Project_Path }} --configuration ${{ matrix.configuration }} --output ./build
+      - name: Build (${{ matrix.configuration }})
+        run: dotnet build ${{ env.Project_Path }} --configuration ${{ matrix.configuration }} --no-restore
 
-    - name: Upload DLL artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: No-V-synch-DLL-${{ matrix.configuration }}
-        path: ./build/*.dll
+      - name: Test (${{ matrix.configuration }})
+        run: dotnet test ${{ env.Project_Path }} --configuration ${{ matrix.configuration }} --no-build --verbosity normal
+
+      - name: Upload build artifacts (${{ matrix.configuration }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.configuration }}
+          path: |
+            bin/${{ matrix.configuration }}/
