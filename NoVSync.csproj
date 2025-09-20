@@ -1,18 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>NoVSync</RootNamespace>
-    <AssemblyName>NoVSync</AssemblyName>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Reference Include="Stardew Valley">
-      <HintPath>../StardewValley.dll</HintPath>
-    </Reference>
-    <Reference Include="StardewModdingAPI">
-      <HintPath>../StardewModdingAPI.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-</Project>
+<ItemGroup>
+  <Reference Include="Stardew Valley">
+    <HintPath>libs\Stardew Valley.dll</HintPath>
+  </Reference>
+  <Reference Include="StardewModdingAPI">
+    <HintPath>libs\StardewModdingAPI.dll</HintPath>
+  </Reference>
+</ItemGroup>
