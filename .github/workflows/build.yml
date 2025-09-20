@@ -18,6 +18,7 @@ jobs:
 
     env:
       Project_Path: NoVSync.csproj
+      EnableModBuildConfig: false   # 🚀 Disable game folder check on CI
 
     steps:
       - name: Checkout repository
