@@ -24,20 +24,10 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '6.0.x' # SMAPI targets .NET 6
+          dotnet-version: '6.0.x' # SMAPI mods target .NET 6
 
       - name: Restore dependencies
         run: dotnet restore ${{ env.Project_Path }}
-
-      - name: Download SMAPI references
-        run: |
-          mkdir -p external
-          curl -L https://github.com/Pathoschild/SMAPI/releases/download/4.0.0/SMAPI-4.0.0-installer.zip -o smapi.zip
-          tar -xf smapi.zip -C external
-          # Copy game DLLs + SMAPI DLLs into a "libs" folder for MSBuild
-          mkdir -p libs
-          cp external/internal/Stardew\ Valley.dll libs/
-          cp external/internal/StardewModdingAPI.dll libs/
 
       - name: Build (${{ matrix.configuration }})
         run: dotnet build ${{ env.Project_Path }} --configuration ${{ matrix.configuration }} --no-restore
