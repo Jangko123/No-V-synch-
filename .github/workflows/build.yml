@@ -1,8 +1,10 @@
-name: .NET Build
+name: .NET Build & Release
 
 on:
   push:
     branches: [ "main" ]
+    tags:
+      - "v*"   # Runs when you push a tag like v1.0.0
   pull_request:
     branches: [ "main" ]
 
@@ -24,7 +26,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '6.0.x' # SMAPI mods target .NET 6
+          dotnet-version: '6.0.x'
 
       - name: Restore dependencies
         run: dotnet restore ${{ env.Project_Path }}
@@ -37,3 +39,26 @@ jobs:
         with:
           name: build-${{ matrix.configuration }}
           path: bin/${{ matrix.configuration }}/
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Download Release artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-Release
+          path: release-build
+
+      - name: Create zip package
+        run: |
+          zip -r NoVSync-${GITHUB_REF_NAME}.zip release-build/*
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: NoVSync-${{ github.ref_name }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
