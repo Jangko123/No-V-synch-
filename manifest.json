@@ -3,7 +3,7 @@
   "Author": "Jangko",
   "Version": "1.0.0",
   "Description": "Disables V-Sync in Stardew Valley Android.",
-  "UniqueID": "Jamgko.NoVSync",
+  "UniqueID": "Jangko.NoVSync",
   "EntryDll": "NoVSync.dll",
   "MinimumApiVersion": "3.0.0"
 }
