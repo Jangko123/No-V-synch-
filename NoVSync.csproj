@@ -1,22 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
-    <Nullable>enable</Nullable>
-    <EnableModBuildConfig>false</EnableModBuildConfig>
+    <!-- Target .NET 6 (works on Android) -->
+    <TargetFramework>net6.0</TargetFramework>
+
+    <!-- Skip the Stardew Valley game path check -->
+    <StardewModBuildConfigSkipGameCheck>true</StardewModBuildConfigSkipGameCheck>
+
+    <!-- Optional: produce a DLL only -->
+    <OutputType>Library</OutputType>
+
+    <!-- Optional: set Release build defaults -->
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="StardewValley">
-      <HintPath>lib/StardewValley.dll</HintPath>
-    </Reference>
-    <Reference Include="StardewModdingAPI">
-      <HintPath>lib/StardewModdingAPI.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
+    <!-- SMAPI reference -->
+    <PackageReference Include="StardewModdingAPI" Version="3.18.2" />
+    
+    <!-- ModBuildConfig reference -->
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.4.0" />
   </ItemGroup>
 
