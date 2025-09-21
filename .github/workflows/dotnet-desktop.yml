@@ -36,7 +36,7 @@
 # For a complete CI/CD sample to get started with GitHub Action workflows for Desktop Applications,
 # refer to https://github.com/microsoft/github-actions-for-desktop-apps
 
-name: Build SMAPI Mod
+name: Build Mod
 
 on:
   push:
@@ -46,7 +46,6 @@ on:
 
 jobs:
   build:
-
     strategy:
       matrix:
         configuration: [Debug, Release]
@@ -54,38 +53,40 @@ jobs:
     runs-on: windows-latest
 
     env:
-      Project_Path: NoVSync.csproj
-      Manifest_Path: manifest.json
+      Project_Path: NoVSync.csproj   # ✅ adjust if your .csproj filename/path differs
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
-      - name: Setup .NET 6
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 6.0.x
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 6.0.x
 
-      - name: Restore dependencies
-        run: dotnet restore ${{ env.Project_Path }}
+    # Create fake Stardew Valley game folder for ModBuildConfig
+    - name: Create fake game folder
+      run: New-Item -ItemType Directory -Path D:\StardewValley
+      shell: pwsh
 
-      - name: Build project
-        run: dotnet build ${{ env.Project_Path }} --configuration ${{ matrix.configuration }} --no-restore
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.Project_Path }}
 
-      - name: Run tests (optional)
-        run: dotnet test ${{ env.Project_Path }} --configuration ${{ matrix.configuration }} --no-build
+    - name: Build project
+      run: dotnet build ${{ env.Project_Path }} --configuration ${{ matrix.configuration }} --no-restore /p:GamePath=D:\StardewValley
 
-      - name: Package mod into ZIP
-        run: |
-          $dllPath = "bin/${{ matrix.configuration }}/net6.0/NoVSync.dll"
-          $zipFile = "NoVsynch-${{ matrix.configuration }}.zip"
-          Compress-Archive -Path $dllPath,${{ env.Manifest_Path }} -DestinationPath $zipFile
-        shell: pwsh
+    # Package DLL + manifest.json into zip
+    - name: Package mod into zip
+      run: |
+        $zipFile = "NoVSync-${{ matrix.configuration }}.zip"
+        Compress-Archive -Path bin/${{ matrix.configuration }}/net6.0/NoVSync.dll,manifest.json -DestinationPath $zipFile
+      shell: pwsh
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: NoVsynch-${{ matrix.configuration }}
-          path: NoVsynch-${{ matrix.configuration }}.zip
+    # Upload artifact
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: NoVSync-${{ matrix.configuration }}
+        path: NoVSync-${{ matrix.configuration }}.zip
