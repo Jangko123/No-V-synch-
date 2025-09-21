@@ -40,24 +40,16 @@ name: Build Mod
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
   build:
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-
     runs-on: windows-latest
 
-    env:
-      Project_Path: NoVSync.csproj   # ✅ adjust if your .csproj filename/path differs
-
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
@@ -66,27 +58,14 @@ jobs:
       with:
         dotnet-version: 6.0.x
 
-    # Create fake Stardew Valley game folder for ModBuildConfig
-    - name: Create fake game folder
-      run: New-Item -ItemType Directory -Path D:\StardewValley
-      shell: pwsh
+    - name: Restore
+      run: dotnet restore NoVSync.csproj
 
-    - name: Restore dependencies
-      run: dotnet restore ${{ env.Project_Path }}
+    - name: Build
+      run: dotnet build NoVSync.csproj --configuration Release --no-restore /p:GamePath=""
 
-    - name: Build project
-      run: dotnet build ${{ env.Project_Path }} --configuration ${{ matrix.configuration }} --no-restore /p:GamePath=D:\StardewValley
-
-    # Package DLL + manifest.json into zip
-    - name: Package mod into zip
-      run: |
-        $zipFile = "NoVSync-${{ matrix.configuration }}.zip"
-        Compress-Archive -Path bin/${{ matrix.configuration }}/net6.0/NoVSync.dll,manifest.json -DestinationPath $zipFile
-      shell: pwsh
-
-    # Upload artifact
-    - name: Upload build artifact
+    - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: NoVSync-${{ matrix.configuration }}
-        path: NoVSync-${{ matrix.configuration }}.zip
+        name: NoVSync
+        path: bin/Release
