@@ -36,31 +36,42 @@
 # For a complete CI/CD sample to get started with GitHub Action workflows for Desktop Applications,
 # refer to https://github.com/microsoft/github-actions-for-desktop-apps
 
-name: Build Mod
+name: Build No-VSync Mod
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      # Step 1: Check out the repo
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Setup .NET 8
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
+      # Step 2: Set up .NET
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
 
-    - name: Build
-      run: dotnet build NoVSync.csproj --configuration Release
+      # Step 3: Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: NoVSync
-        path: bin/Release/net8.0
+      # Step 4: Build the mod (Release)
+      - name: Build Release DLL
+        run: dotnet build NoVSync.csproj --configuration Release
+
+      # Step 5: Upload the built DLL as artifact
+      - name: Upload DLL
+        uses: actions/upload-artifact@v3
+        with:
+          name: NoVSync-DLL
+          path: bin/Release/net6.0/NoVSync.dll
