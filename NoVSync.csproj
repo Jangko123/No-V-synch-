@@ -4,7 +4,9 @@
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <EnableModBuildConfig>false</EnableModBuildConfig> <!-- 🚀 disables game folder check -->
+
+    <!-- Use Android assemblies if GAMEPATH is set, otherwise fall back to stubs -->
+    <GamePath Condition="'$(GAMEPATH)' != ''">$(GAMEPATH)</GamePath>
   </PropertyGroup>
 
   <ItemGroup>
