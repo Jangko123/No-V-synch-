@@ -80,12 +80,12 @@ jobs:
       - name: Package mod into ZIP
         run: |
           $dllPath = "bin/${{ matrix.configuration }}/net6.0/NoVSync.dll"
-          $zipFile = "No-V-synch-${{ matrix.configuration }}.zip"
+          $zipFile = "NoVsynch-${{ matrix.configuration }}.zip"
           Compress-Archive -Path $dllPath,${{ env.Manifest_Path }} -DestinationPath $zipFile
         shell: pwsh
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: No-V-synch-${{ matrix.configuration }}
-          path: No-V-synch-${{ matrix.configuration }}.zip
+          name: NoVsynch-${{ matrix.configuration }}
+          path: NoVsynch-${{ matrix.configuration }}.zip
