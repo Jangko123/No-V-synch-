@@ -54,8 +54,8 @@ jobs:
     runs-on: windows-latest
 
     env:
-      Project_Path: No-V-synch-/NoVSync.csproj
-      Manifest_Path: No-V-synch-/manifest.json
+      Project_Path: NoVSync.csproj
+      Manifest_Path: manifest.json
 
     steps:
       - name: Checkout repository
@@ -79,7 +79,7 @@ jobs:
 
       - name: Package mod into ZIP
         run: |
-          $dllPath = "No-V-synch-/bin/${{ matrix.configuration }}/net6.0/NoVSync.dll"
+          $dllPath = "bin/${{ matrix.configuration }}/net6.0/NoVSync.dll"
           $zipFile = "No-V-synch-${{ matrix.configuration }}.zip"
           Compress-Archive -Path $dllPath,${{ env.Manifest_Path }} -DestinationPath $zipFile
         shell: pwsh
