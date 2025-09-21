@@ -1,14 +1,20 @@
-<ItemGroup>
-  <Reference Include="StardewValley">
-    <HintPath>lib/StardewValley.dll</HintPath>
-    <Private>false</Private>
-  </Reference>
-  <Reference Include="StardewValley.GameData">
-    <HintPath>lib/StardewValley.GameData.dll</HintPath>
-    <Private>false</Private>
-  </Reference>
-  <Reference Include="StardewModdingAPI">
-    <HintPath>lib/StardewModdingAPI.dll</HintPath>
-    <Private>false</Private>
-  </Reference>
-</ItemGroup>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="StardewModdingAPI">
+      <HintPath>lib/StardewModdingAPI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="StardewValley">
+      <HintPath>lib/StardewValley.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
