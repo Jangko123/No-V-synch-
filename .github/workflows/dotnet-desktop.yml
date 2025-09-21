@@ -46,26 +46,31 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
 
-    - name: Restore
+    - name: Restore dependencies
       run: dotnet restore NoVSync.csproj
 
-    - name: Build
-      run: dotnet build NoVSync.csproj --configuration Release --no-restore /p:GamePath=""
+    - name: Build project
+      run: dotnet build NoVSync.csproj --configuration Release --no-restore
+
+    - name: Publish mod files
+      run: |
+        mkdir -p publish/NoVSync
+        cp bin/Release/net6.0/NoVSync.dll publish/NoVSync/
+        cp manifest.json publish/NoVSync/
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
-        name: NoVSync
-        path: bin/Release
+        name: NoVSync-Mod
+        path: publish/NoVSync
