@@ -8,10 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="StardewValley">
+      <HintPath>lib/StardewValley.dll</HintPath>
+    </Reference>
     <Reference Include="StardewModdingAPI">
       <HintPath>lib/StardewModdingAPI.dll</HintPath>
-      <Private>false</Private>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.4.0" />
   </ItemGroup>
 
 </Project>
