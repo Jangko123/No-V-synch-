@@ -54,7 +54,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      Project_Path: No-V-synch-/NoVSync.csproj  # Path to your .csproj
+      Project_Path: NoVSync.csproj  # Correct path to your .csproj at repo root
 
     steps:
       - name: Checkout repository
@@ -79,7 +79,7 @@ jobs:
       - name: Package mod into ZIP
         run: |
           $zipFile = "No-V-synch-${{ matrix.configuration }}.zip"
-          Compress-Archive -Path No-V-synch-/bin/${{ matrix.configuration }}/net6.0/NoVSync.dll,No-V-synch-/manifest.json -DestinationPath $zipFile
+          Compress-Archive -Path bin/${{ matrix.configuration }}/net6.0/NoVSync.dll,manifest.json -DestinationPath $zipFile
         shell: pwsh
 
       - name: Upload build artifact
