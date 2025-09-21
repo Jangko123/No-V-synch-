@@ -36,39 +36,33 @@
 # For a complete CI/CD sample to get started with GitHub Action workflows for Desktop Applications,
 # refer to https://github.com/microsoft/github-actions-for-desktop-apps
 
-name: Build NoVSync Mod
+name: Build Mod
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v2
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
 
-    - name: Build mod
+    - name: Build
       run: dotnet build NoVSync.csproj --configuration Release
 
-    - name: Package mod
-      run: |
-        mkdir -p package
-        cp bin/Release/net6.0/NoVSync.dll package/
-        cp manifest.json package/
-        cd package && zip -r ../NoVSync.zip .
-
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v2
       with:
         name: NoVSync
-        path: NoVSync.zip
+        path: |
+          bin/Release/net6.0/*
+          manifest.json
