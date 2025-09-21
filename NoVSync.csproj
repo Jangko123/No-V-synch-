@@ -4,13 +4,6 @@
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-
-    <!-- Use Android assemblies if GAMEPATH is set, otherwise fall back to stubs -->
-    <GamePath Condition="'$(GAMEPATH)' != ''">$(GAMEPATH)</GamePath>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.4.0" />
-  </ItemGroup>
 
 </Project>
